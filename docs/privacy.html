@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Liqpass Privacy Policy</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      max-width: 720px;
+      margin: 40px auto;
+      padding: 0 20px;
+      line-height: 1.6;
+      color: #222;
+    }
+    h1 { border-bottom: 2px solid #e03030; padding-bottom: 8px; }
+    h2 { margin-top: 32px; color: #333; }
+    a { color: #e03030; }
+    .updated { color: #888; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <h1>Liqpass Privacy Policy</h1>
+  <p class="updated">Last updated: April 30, 2026</p>
+
+  <p>
+    Liqpass is a simple compass app that points toward the nearest open liquor
+    store. This policy explains, in plain language, what happens with your data
+    when you use the app.
+  </p>
+
+  <h2>Short version</h2>
+  <p>
+    We don't collect, store, sell, or share any personal data. Your location
+    stays on your device, except for one anonymous query sent to OpenStreetMap
+    to look up nearby stores. We have no servers, no accounts, no analytics,
+    and no ads.
+  </p>
+
+  <h2>What data the app accesses</h2>
+  <p>
+    Liqpass requests one permission: <strong>location (GPS)</strong>. We use
+    it for one purpose: to find liquor stores near you and calculate the
+    direction the compass needle should point.
+  </p>
+  <p>
+    The app also reads your device's compass sensor (magnetometer) so the
+    needle rotates as you turn your phone. No permission is required for this
+    on Android, and no compass data ever leaves your device.
+  </p>
+
+  <h2>What we send to other services</h2>
+  <p>
+    To find nearby stores, the app sends your approximate location (latitude
+    and longitude, rounded to a 5–15 km bounding box) to the
+    <a href="https://overpass-api.de/" target="_blank" rel="noopener">Overpass API</a>,
+    a free public service that queries the
+    <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener">OpenStreetMap</a>
+    database.
+  </p>
+  <p>
+    Overpass receives only the bounding box of your search area, not your
+    precise coordinates. The query is anonymous — no user identifier, account,
+    or device ID is included. Overpass's own privacy policy applies to that
+    request; see
+    <a href="https://wiki.openstreetmap.org/wiki/Privacy_Policy" target="_blank" rel="noopener">
+      openstreetmap.org/copyright
+    </a>.
+  </p>
+
+  <h2>What we store</h2>
+  <p>
+    Nothing. Liqpass has no backend, no database, and no user accounts. Your
+    location is held in memory only while the app is open and is discarded
+    when you close it.
+  </p>
+
+  <h2>Analytics and tracking</h2>
+  <p>
+    None. Liqpass does not include analytics SDKs, advertising networks,
+    crash reporters, or any third-party tracking.
+  </p>
+
+  <h2>Children's privacy</h2>
+  <p>
+    Liqpass is intended for users of legal drinking age in their jurisdiction.
+    The app is not directed at children under 18 (or 21 where applicable) and
+    we do not knowingly collect data from anyone — minor or adult.
+  </p>
+
+  <h2>Third-party services</h2>
+  <ul>
+    <li>
+      <strong>Overpass API / OpenStreetMap</strong> — provides the store
+      location data. Receives anonymous bounding-box queries as described above.
+    </li>
+    <li>
+      <strong>Google Play Services</strong> — Android's location services
+      provide GPS coordinates to the app on your device. No data is sent to
+      Google by Liqpass.
+    </li>
+  </ul>
+
+  <h2>Changes to this policy</h2>
+  <p>
+    If this policy changes, the "Last updated" date at the top will be revised
+    and the new version will be posted at this URL. Substantive changes will
+    be announced in the app's release notes on Google Play.
+  </p>
+
+  <h2>Contact</h2>
+  <p>
+    Questions? Email <a href="mailto:will.c.cooper90@gmail.com">will.c.cooper90@gmail.com</a>.
+  </p>
+</body>
+</html>
