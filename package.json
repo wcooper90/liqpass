@@ -1,0 +1,22 @@
+{
+  "name": "liqpass",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "cap:sync": "npm run build && npx cap sync android",
+    "cap:open": "npx cap open android",
+    "android": "npm run cap:sync && npm run cap:open"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.6.2",
+    "typescript": "~5.3.3",
+    "vite": "^5.2.0"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.6.2",
+    "@capacitor/core": "^7.6.2",
+    "@capacitor/geolocation": "^7.1.8"
+  }
+}

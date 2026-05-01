@@ -1,0 +1,173 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --red: #e03030;
+  --bg: #0a0a0a;
+  --text: #ffffff;
+  --muted: #888888;
+  --warn: #c8a000;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+#app {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 40px 24px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: 6px;
+  color: var(--red);
+}
+
+/* ── Compass ─────────────────────────────────────────── */
+
+.compass-wrapper {
+  position: relative;
+  width: min(75vw, 75vh);
+  height: min(75vw, 75vh);
+}
+
+.compass-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-origin: center;
+  will-change: transform;
+}
+
+#compass-rose {
+  transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+#compass-needle {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+#compass-needle.hidden {
+  opacity: 0;
+}
+
+.cardinal {
+  fill: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.cardinal-n {
+  fill: var(--red);
+}
+
+/* Spinning search animation */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.compass-wrapper.searching #compass-rose {
+  animation: spin 2s linear infinite;
+  stroke-dasharray: 12 8;
+}
+
+.compass-wrapper.searching #rose-ring {
+  stroke: #333;
+  stroke-dasharray: 12 8;
+}
+
+.compass-wrapper.searching #compass-needle {
+  opacity: 0;
+}
+
+/* ── Info area ───────────────────────────────────────── */
+
+#info-area {
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-align: center;
+  padding: 0 16px;
+}
+
+.store-name {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.store-distance {
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.store-address {
+  font-size: 13px;
+  color: #555;
+}
+
+.hours-warning {
+  font-size: 13px;
+  color: var(--warn);
+  margin-top: 2px;
+}
+
+.status-text {
+  font-size: 15px;
+  color: #555;
+}
+
+.error-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.error-body {
+  font-size: 15px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── Button ──────────────────────────────────────────── */
+
+.btn {
+  background: var(--red);
+  color: #fff;
+  border: none;
+  border-radius: 32px;
+  padding: 14px 32px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+  opacity: 0.85;
+}
+
+.btn.hidden {
+  visibility: hidden;
+}

@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.expo/
+
+# Capacitor build outputs (the android/ project itself IS committed,
+# but its build artifacts are not)
+android/.gradle/
+android/build/
+android/app/build/
+android/app/release/
+android/local.properties
+android/.idea/
+android/captures/
+android/*.iml
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor.config.json
+android/app/src/main/assets/capacitor.plugins.json
+
+# Keystore — NEVER commit
+*.keystore
+*.jks
+keystore.properties
