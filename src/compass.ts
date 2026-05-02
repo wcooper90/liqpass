@@ -27,7 +27,7 @@ export class CompassUI {
       line.setAttribute('y1', String(cy - r * Math.cos(angle)));
       line.setAttribute('x2', String(cx + inner * Math.sin(angle)));
       line.setAttribute('y2', String(cy - inner * Math.cos(angle)));
-      line.setAttribute('stroke', major ? '#666' : '#3a3a3a');
+      line.setAttribute('class', major ? 'tick-major' : 'tick-minor');
       line.setAttribute('stroke-width', major ? '2' : '1');
       ticksEl.appendChild(line);
     }
