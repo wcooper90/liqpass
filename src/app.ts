@@ -1,8 +1,16 @@
+import { Haptics, ImpactStyle } from '@capacitor/haptics';
 import { CompassUI } from './compass';
 import { watchLocation, type GeolocationWatcher } from './geolocation';
 import { OverpassProvider } from './providers/OverpassProvider';
 import { Store } from './providers/types';
-import { bearing, formatDistance, haversineDistance, type Coords } from './utils/geo';
+import {
+  bearing,
+  formatDistance,
+  formatWalkingTime,
+  haversineDistance,
+  type Coords,
+} from './utils/geo';
+import { openInMaps } from './utils/maps';
 
 type AppState = 'idle' | 'locating' | 'fetching' | 'found' | 'no_stores' | 'error';
 
@@ -27,6 +35,13 @@ export class App {
     this.compass = new CompassUI();
     this.compass.setSearching(true);
     this.startBtn.addEventListener('click', () => this.start());
+
+    this.infoEl.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.store-name') && this.store) {
+        openInMaps(this.store.lat, this.store.lon, this.store.name);
+      }
+    });
   }
 
   private async start() {
@@ -160,6 +175,7 @@ export class App {
           });
           this.renderStoreInfo(this.store, distM);
           this.compass.update(this.bearingDeg, this.deviceHeading);
+          Haptics.impact({ style: ImpactStyle.Light }).catch(() => {});
         }
         break;
 
@@ -198,11 +214,10 @@ export class App {
   private renderStoreInfo(store: Store, distM: number) {
     const dirs = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
     const cardinal = dirs[Math.round(this.bearingDeg / 45) % 8];
-    const bearingLabel = `${Math.round(this.bearingDeg)}° ${cardinal}`;
 
     this.infoEl.innerHTML = `
-      <span class="store-name">${escapeHtml(store.name)}</span>
-      <span class="store-distance">${formatDistance(distM)} · ${bearingLabel}</span>
+      <span class="store-name" role="link" tabindex="0">${escapeHtml(store.name)}</span>
+      <span class="store-distance">${formatDistance(distM)} · ${formatWalkingTime(distM)} · ${cardinal}</span>
       ${store.address ? `<span class="store-address">${escapeHtml(store.address)}</span>` : ''}
       ${store.openStatus === 'unknown' ? `<span class="hours-warning">Hours unknown — may be closed</span>` : ''}
     `;

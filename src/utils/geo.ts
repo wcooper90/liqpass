@@ -54,3 +54,12 @@ export function formatDistance(meters: number): string {
   }
   return `${(meters / 1000).toFixed(1)} km`;
 }
+
+/** Estimate walking time at ~80 m/min and format it. */
+export function formatWalkingTime(meters: number): string {
+  const minutes = Math.max(1, Math.round(meters / 80));
+  if (minutes < 60) return `${minutes} min walk`;
+  const hours = Math.floor(minutes / 60);
+  const rem = minutes % 60;
+  return rem === 0 ? `${hours} hr walk` : `${hours} hr ${rem} min walk`;
+}

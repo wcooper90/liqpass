@@ -172,6 +172,17 @@ html, body {
   opacity: 0;
 }
 
+@keyframes needle-pulse {
+  0%, 100% { filter: none; }
+  50%      { filter: drop-shadow(0 0 8px rgba(224, 48, 48, 0.55)); }
+}
+
+.compass-wrapper:not(.searching) #needle-tip {
+  animation: needle-pulse 2.2s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
 /* ── Info area ───────────────────────────────────────── */
 
 #info-area {
@@ -188,6 +199,20 @@ html, body {
 .store-name {
   font-size: 20px;
   font-weight: 600;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.store-name::after {
+  content: ' ↗';
+  font-size: 0.78em;
+  color: var(--muted);
+  vertical-align: 0.08em;
+  margin-left: 2px;
+}
+
+.store-name:active {
+  opacity: 0.6;
 }
 
 .store-distance {
