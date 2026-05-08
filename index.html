@@ -11,7 +11,15 @@
 </head>
 <body>
   <div id="app">
-    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">
+    <button id="about-btn" class="icon-btn icon-btn-left" aria-label="About">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="16" x2="12" y2="12" />
+        <line x1="12" y1="8" x2="12.01" y2="8" />
+      </svg>
+    </button>
+
+    <button id="theme-toggle" class="icon-btn icon-btn-right" aria-label="Toggle theme">
       <svg id="theme-icon" viewBox="0 0 24 24" width="22" height="22"></svg>
     </button>
 
@@ -34,10 +42,43 @@
       </svg>
     </div>
 
+    <div id="cardinal-display" class="cardinal-display"></div>
+
+    <div id="calibration-hint" class="calibration-hint" role="status">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12a9 9 0 11-9-9c2.5 0 4.74 1 6.36 2.64" />
+        <polyline points="21 3 21 9 15 9" />
+      </svg>
+      <span>Compass needs calibrating — wave your phone in a figure 8</span>
+    </div>
+
     <div id="info-area"></div>
 
     <button id="start-btn" class="btn">Find Nearest Store</button>
   </div>
+
+  <div id="about-modal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <h2 class="modal-title">Liqpass</h2>
+      <p class="modal-body">
+        A simple compass that points to the nearest open liquor store.
+      </p>
+      <p class="modal-body modal-section">
+        <strong>How to use:</strong> Tap <em>Find Nearest Store</em>, hold your phone flat,
+        and follow the red needle. Tap the store name to open it in Maps.
+      </p>
+      <p class="modal-body modal-section modal-fineprint">
+        Store data from OpenStreetMap contributors.
+        Liqpass shows the closest open store based on available data — always verify hours and directions independently.
+      </p>
+      <p class="modal-links">
+        <a id="about-privacy" href="#" target="_blank" rel="noopener">Privacy Policy</a>
+      </p>
+      <button id="about-close" class="btn modal-close">Close</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script type="module" src="/src/main.ts"></script>
 </body>

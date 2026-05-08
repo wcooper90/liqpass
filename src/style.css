@@ -65,12 +65,11 @@ html, body {
   color: var(--red);
 }
 
-/* ── Theme toggle ────────────────────────────────────── */
+/* ── Icon buttons (theme + about) ────────────────────── */
 
-.theme-toggle {
+.icon-btn {
   position: absolute;
   top: 18px;
-  right: 18px;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -83,14 +82,18 @@ html, body {
   -webkit-tap-highlight-color: transparent;
   transition: background 0.2s ease;
   color: var(--toggle-icon);
+  z-index: 2;
 }
 
-.theme-toggle:active {
+.icon-btn-left  { left: 18px; }
+.icon-btn-right { right: 18px; }
+
+.icon-btn:active {
   opacity: 0.7;
 }
 
-.theme-toggle svg {
-  fill: currentColor;
+.icon-btn svg {
+  fill: none;
 }
 
 /* ── Compass ─────────────────────────────────────────── */
@@ -183,6 +186,43 @@ html, body {
   transform-origin: center;
 }
 
+/* ── Cardinal display ────────────────────────────────── */
+
+.cardinal-display {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--text);
+  min-height: 32px;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cardinal-display.visible {
+  opacity: 0.9;
+}
+
+/* ── Calibration hint ────────────────────────────────── */
+
+.calibration-hint {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--toggle-bg);
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  max-width: 90%;
+}
+
+.calibration-hint.visible {
+  display: flex;
+}
+
 /* ── Info area ───────────────────────────────────────── */
 
 #info-area {
@@ -231,6 +271,47 @@ html, body {
   margin-top: 2px;
 }
 
+/* ── Open / closed status badge ──────────────────────── */
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.status-open    { color: #2faa55; }
+.status-open    .status-dot { background: #2faa55; }
+.status-closed  { color: var(--red); }
+.status-closed  .status-dot { background: var(--red); }
+.status-unknown { color: var(--warn); }
+.status-unknown .status-dot { background: var(--warn); }
+
+/* ── Next-nearest subtle link ────────────────────────── */
+
+.next-nearest-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-size: 13px;
+  cursor: pointer;
+  padding: 6px 0;
+  margin-top: 4px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.next-nearest-btn:active {
+  opacity: 0.5;
+}
+
 .status-text {
   font-size: 15px;
   color: var(--subtle);
@@ -268,4 +349,99 @@ html, body {
 
 .btn.hidden {
   visibility: hidden;
+}
+
+/* ── About modal ─────────────────────────────────────── */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 100;
+}
+
+.modal.visible {
+  display: flex;
+}
+
+.modal-content {
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 360px;
+  width: 100%;
+  border: 1px solid var(--ring);
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 4px;
+  color: var(--red);
+  margin-bottom: 12px;
+}
+
+.modal-body {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.modal-section {
+  margin-top: 12px;
+}
+
+.modal-fineprint {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.modal-links {
+  margin-top: 14px;
+  font-size: 13px;
+}
+
+.modal-links a {
+  color: var(--text);
+  text-decoration: underline;
+}
+
+.modal-link-sep {
+  color: var(--subtle);
+  margin: 0 6px;
+}
+
+.modal-close {
+  margin-top: 18px;
+  width: 100%;
+}
+
+/* ── Toast ───────────────────────────────────────────── */
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--text);
+  color: var(--bg);
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 200;
+  max-width: 80%;
+  text-align: center;
+}
+
+.toast.visible {
+  opacity: 0.95;
+  transform: translateX(-50%) translateY(0);
 }

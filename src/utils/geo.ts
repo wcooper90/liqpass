@@ -1,3 +1,5 @@
+import { useImperial } from './units';
+
 export interface Coords {
   lat: number;
   lon: number;
@@ -47,12 +49,29 @@ export function shortestArc(current: number, target: number): number {
   return current + diff;
 }
 
-/** Format meters as a human-readable distance string. */
+/** Format meters as a human-readable distance string, using locale-detected units. */
 export function formatDistance(meters: number): string {
+  if (useImperial) {
+    const feet = meters * 3.28084;
+    if (feet < 528) {
+      return `${Math.round(feet)} ft`;
+    }
+    const miles = meters / 1609.344;
+    return miles < 10 ? `${miles.toFixed(1)} mi` : `${Math.round(miles)} mi`;
+  }
   if (meters < 1000) {
     return `${Math.round(meters)} m`;
   }
   return `${(meters / 1000).toFixed(1)} km`;
+}
+
+/** Format a radius (always in km/mi, never m/ft) for use in button labels. */
+export function formatRadius(meters: number): string {
+  if (useImperial) {
+    const miles = meters / 1609.344;
+    return `${Math.round(miles)} mi`;
+  }
+  return `${Math.round(meters / 1000)} km`;
 }
 
 /** Estimate walking time at ~80 m/min and format it. */
