@@ -17,12 +17,11 @@ type AppState = 'idle' | 'locating' | 'fetching' | 'found' | 'no_stores' | 'erro
 
 const INITIAL_RADIUS_M = 5_000;
 const EXPANDED_RADIUS_M = 15_000;
-const WIDER_RADIUS_M = 25_000;
 
 // Calibration detection: if the magnetometer's recent readings are too spread,
 // suggest a figure-8 wave. Tuned conservatively to avoid false positives during
 // intentional rotation.
-const HEADING_HISTORY_SIZE = 30;
+const HEADING_HISTORY_SIZE = 160;
 const CALIBRATION_SPREAD_THRESHOLD = 0.05;
 
 const provider = new OverpassProvider();
@@ -55,6 +54,10 @@ export class App {
 
     this.infoEl.addEventListener('click', (e) => {
       const target = e.target as HTMLElement;
+      if (target.closest('.prev-nearest-btn')) {
+        this.selectPrevStore();
+        return;
+      }
       if (target.closest('.next-nearest-btn')) {
         this.selectNextStore();
         return;
@@ -178,7 +181,7 @@ export class App {
     try {
       const stores = await provider.findNearby(coords, radius);
 
-      if (stores.length === 0 && radius === INITIAL_RADIUS_M) {
+      if (stores.length === 0 && radius < EXPANDED_RADIUS_M) {
         return this.fetchStores(coords, EXPANDED_RADIUS_M);
       }
 
@@ -205,9 +208,12 @@ export class App {
     Haptics.impact({ style: ImpactStyle.Light }).catch(() => {});
   }
 
-  private searchWider() {
-    if (!this.userCoords) return;
-    this.fetchStores(this.userCoords, WIDER_RADIUS_M);
+  private selectPrevStore() {
+    if (this.stores.length < 2 || !this.userCoords) return;
+    this.storeIndex = (this.storeIndex - 1 + this.stores.length) % this.stores.length;
+    this.store = this.stores[this.storeIndex];
+    this.updateBearing(this.userCoords);
+    Haptics.impact({ style: ImpactStyle.Light }).catch(() => {});
   }
 
   private async copyStoreAddress() {
@@ -293,20 +299,12 @@ export class App {
         break;
 
       case 'no_stores': {
-        const triedWider = this.lastSearchRadius >= WIDER_RADIUS_M;
         const lastLabel = formatRadius(this.lastSearchRadius);
-
         this.infoEl.innerHTML = `
           <span class="error-title">Nothing Nearby</span>
           <span class="error-body">No liquor stores found within ${lastLabel}.</span>`;
-
-        if (triedWider) {
-          this.startBtn.textContent = 'Try Again';
-          this.startBtn.onclick = () => this.resetToIdle();
-        } else {
-          this.startBtn.textContent = `Search ${formatRadius(WIDER_RADIUS_M)}`;
-          this.startBtn.onclick = () => this.searchWider();
-        }
+        this.startBtn.textContent = 'Try Again';
+        this.startBtn.onclick = () => this.resetToIdle();
         this.startBtn.classList.remove('hidden');
         break;
       }
@@ -343,7 +341,7 @@ export class App {
     }[store.openStatus];
 
     const hasMore = this.stores.length > 1;
-    const nextLabel = hasMore ? `Next nearest (${this.storeIndex + 1}/${this.stores.length}) →` : '';
+    const hasPrev = this.storeIndex > 0;
 
     this.infoEl.innerHTML = `
       <span class="store-name" role="link" tabindex="0">${escapeHtml(store.name)}</span>
@@ -352,7 +350,11 @@ export class App {
       <span class="status-badge status-${store.openStatus}">
         <span class="status-dot"></span>${statusLabel}
       </span>
-      ${hasMore ? `<button class="next-nearest-btn" type="button">${nextLabel}</button>` : ''}
+      ${hasMore ? `
+      <div class="store-nav">
+        ${hasPrev ? `<button class="prev-nearest-btn" type="button">← Back</button>` : '<span></span>'}
+        <button class="next-nearest-btn" type="button">Next (${this.storeIndex + 1}/${this.stores.length}) →</button>
+      </div>` : ''}
     `;
   }
 }

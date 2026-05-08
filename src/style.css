@@ -244,8 +244,8 @@ html, body {
 }
 
 .store-name::after {
-  content: ' ↗';
-  font-size: 0.78em;
+  content: ' 🔗';
+  font-size: 0.72em;
   color: var(--muted);
   vertical-align: 0.08em;
   margin-left: 2px;
@@ -297,6 +297,14 @@ html, body {
 
 /* ── Next-nearest subtle link ────────────────────────── */
 
+.store-nav {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  margin-top: 4px;
+}
+
+.prev-nearest-btn,
 .next-nearest-btn {
   background: none;
   border: none;
@@ -304,10 +312,10 @@ html, body {
   font-size: 13px;
   cursor: pointer;
   padding: 6px 0;
-  margin-top: 4px;
   -webkit-tap-highlight-color: transparent;
 }
 
+.prev-nearest-btn:active,
 .next-nearest-btn:active {
   opacity: 0.5;
 }
@@ -404,6 +412,7 @@ html, body {
 .modal-links {
   margin-top: 14px;
   font-size: 13px;
+  text-align: center;
 }
 
 .modal-links a {
