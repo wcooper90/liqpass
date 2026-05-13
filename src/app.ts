@@ -21,8 +21,8 @@ const EXPANDED_RADIUS_M = 15_000;
 // Calibration detection: if the magnetometer's recent readings are too spread,
 // suggest a figure-8 wave. Tuned conservatively to avoid false positives during
 // intentional rotation.
-const HEADING_HISTORY_SIZE = 160;
-const CALIBRATION_SPREAD_THRESHOLD = 0.05;
+const HEADING_HISTORY_SIZE = 240;
+const CALIBRATION_SPREAD_THRESHOLD = 0.15;
 
 const provider = new OverpassProvider();
 
