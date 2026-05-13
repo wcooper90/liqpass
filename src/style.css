@@ -22,6 +22,7 @@
   --button-text: #ffffff;
   --toggle-bg: rgba(255, 255, 255, 0.08);
   --toggle-icon: #cccccc;
+  --ring-glow: rgba(224, 48, 48, 0.18);
 }
 
 body.theme-light {
@@ -36,6 +37,7 @@ body.theme-light {
   --needle-center: #444444;
   --toggle-bg: rgba(0, 0, 0, 0.06);
   --toggle-icon: #333333;
+  --ring-glow: rgba(100, 100, 100, 0.15);
 }
 
 html, body {
@@ -148,7 +150,7 @@ html, body {
 
 .cardinal {
   fill: var(--muted);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   text-anchor: middle;
   dominant-baseline: middle;
@@ -173,6 +175,11 @@ html, body {
 
 .compass-wrapper.searching #compass-needle {
   opacity: 0;
+}
+
+.compass-wrapper:not(.searching) .rose-ring {
+  filter: drop-shadow(0 0 10px var(--ring-glow));
+  transition: filter 0.6s ease;
 }
 
 @keyframes needle-pulse {
@@ -241,6 +248,11 @@ html, body {
   font-weight: 600;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  display: block;
+  max-width: 85vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .store-name::after {
@@ -353,6 +365,8 @@ html, body {
 
 .btn:active {
   opacity: 0.85;
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
 }
 
 .btn.hidden {
@@ -365,15 +379,19 @@ html, body {
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.6);
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
   z-index: 100;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
 }
 
 .modal.visible {
-  display: flex;
+  opacity: 1;
+  visibility: visible;
 }
 
 .modal-content {
@@ -384,6 +402,12 @@ html, body {
   max-width: 360px;
   width: 100%;
   border: 1px solid var(--ring);
+  transform: scale(0.94);
+  transition: transform 0.2s ease;
+}
+
+.modal.visible .modal-content {
+  transform: scale(1);
 }
 
 .modal-title {
@@ -453,4 +477,49 @@ html, body {
 .toast.visible {
   opacity: 0.95;
   transform: translateX(-50%) translateY(0);
+}
+
+/* ── Loading dots ────────────────────────────────────── */
+
+.loading-dots {
+  display: inline-flex;
+  gap: 3px;
+  margin-left: 2px;
+  vertical-align: baseline;
+}
+
+.loading-dots span {
+  opacity: 0;
+  animation: dot-blink 1.2s ease-in-out infinite;
+  font-size: 1.1em;
+  line-height: 1;
+}
+
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dot-blink {
+  0%, 80%, 100% { opacity: 0; }
+  40%           { opacity: 1; }
+}
+
+/* ── Info area fade-in ───────────────────────────────── */
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#info-area.animate-in {
+  animation: fadeInUp 0.25s ease;
+}
+
+/* ── Reduced motion ──────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

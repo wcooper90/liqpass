@@ -19,9 +19,11 @@ export class CompassUI {
     const cx = 100, cy = 100, r = 92;
 
     for (let i = 0; i < 12; i++) {
+      // Cardinal positions (N/E/S/W) have no tick — the letter serves as the marker
+      if (i % 3 === 0) continue;
       const angle = (i * 30 * Math.PI) / 180;
-      const major = i % 3 === 0;
-      const inner = major ? r - 14 : r - 7;
+      const major = false;
+      const inner = r - 7;
       const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
       line.setAttribute('x1', String(cx + r * Math.sin(angle)));
       line.setAttribute('y1', String(cy - r * Math.cos(angle)));

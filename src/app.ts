@@ -46,6 +46,7 @@ export class App {
   private cardinalEl = document.getElementById('cardinal-display')!;
   private calibrationEl = document.getElementById('calibration-hint')!;
   private toastEl = document.getElementById('toast')!;
+  private compassWrapper = document.getElementById('compass-wrapper')!;
 
   constructor() {
     this.compass = new CompassUI();
@@ -72,6 +73,12 @@ export class App {
       if (target.closest('.store-name') && this.store) {
         e.preventDefault();
         this.copyStoreAddress();
+      }
+    });
+
+    this.compassWrapper.addEventListener('click', () => {
+      if (this.state === 'found' && this.userCoords) {
+        this.fetchStores(this.userCoords);
       }
     });
   }
@@ -277,11 +284,11 @@ export class App {
         break;
 
       case 'locating':
-        this.infoEl.innerHTML = `<span class="status-text">Finding your location…</span>`;
+        this.infoEl.innerHTML = `<span class="status-text">Finding your location<span class="loading-dots"><span>·</span><span>·</span><span>·</span></span></span>`;
         break;
 
       case 'fetching':
-        this.infoEl.innerHTML = `<span class="status-text">Searching nearby…</span>`;
+        this.infoEl.innerHTML = `<span class="status-text">Searching nearby<span class="loading-dots"><span>·</span><span>·</span><span>·</span></span></span>`;
         break;
 
       case 'found':
@@ -356,6 +363,10 @@ export class App {
         <button class="next-nearest-btn" type="button">Next (${this.storeIndex + 1}/${this.stores.length}) →</button>
       </div>` : ''}
     `;
+
+    this.infoEl.classList.remove('animate-in');
+    void this.infoEl.offsetWidth;
+    this.infoEl.classList.add('animate-in');
   }
 }
 
