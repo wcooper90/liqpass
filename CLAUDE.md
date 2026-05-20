@@ -11,12 +11,28 @@ Liqpass is a mobile-first compass app that points users toward the nearest liquo
 ```bash
 npm run dev          # start Vite dev server (exposed on LAN for phone testing)
 npm run build        # tsc + vite build → dist/
+npm test             # run all tests once (Vitest)
+npm run test:watch   # rerun tests on file changes
 npm run cap:sync     # build + npx cap sync android (copies dist/ into the Android project)
 npm run cap:open     # open the Android project in Android Studio
 npm run android      # cap:sync then cap:open (full deploy pipeline)
 ```
 
-No test suite exists. There is no lint config.
+There is no lint config.
+
+## Tests
+
+Tests use [Vitest](https://vitest.dev/) and live co-located with source files (`*.test.ts`). Run `npm test` before committing. When adding a new feature, add or update the relevant test file.
+
+- `src/utils/geo.test.ts` — unit tests for haversine distance, bearing, `shortestArc`, and distance/time formatters
+- `src/utils/openingHours.test.ts` — OSM `opening_hours` parser edge cases; uses `vi.useFakeTimers()` to pin the clock
+- `src/providers/OverpassProvider.test.ts` — integration tests with `fetch` mocked; covers sorting, fallback endpoints, address parsing, and closed-store filtering
+
+The `units.ts` module reads `navigator.languages` at import time. Any test file that transitively imports it (via `geo.ts` or `OverpassProvider.ts`) must mock it first:
+
+```ts
+vi.mock('../utils/units', () => ({ useImperial: false }));
+```
 
 ## Architecture
 
