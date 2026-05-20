@@ -1,9 +1,13 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   server: {
     host: true,  // expose to LAN so your phone can connect
     port: 5173,
     allowedHosts: ['real-keys-live.loca.lt', 'loud-spoons-send.loca.lt', 'chubby-candies-start.loca.lt'],
+  },
+  test: {
+    environment: 'node',
+    globals: true,
   },
 });
