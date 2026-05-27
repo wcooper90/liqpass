@@ -66,6 +66,10 @@ export class App {
       }
       if (target.closest('.store-name') && this.store) {
         openInMaps(this.store.lat, this.store.lon, this.store.name);
+        return;
+      }
+      if (target.closest('.status-badge-clickable') && this.store) {
+        openInMaps(this.store.lat, this.store.lon, this.store.name);
       }
     });
 
@@ -370,13 +374,16 @@ export class App {
 
     const hasMore = this.stores.length > 1;
     const hasPrev = this.storeIndex > 0;
+    const isUnknown = store.openStatus === 'unknown';
+    const badgeClass = `status-badge status-${store.openStatus}${isUnknown ? ' status-badge-clickable' : ''}`;
+    const badgeAttrs = isUnknown ? ' role="link" tabindex="0"' : '';
 
     this.infoEl.innerHTML = `
       <span class="store-name" role="link" tabindex="0">${escapeHtml(store.name)}</span>
       <span class="store-distance">${formatDistance(distM)} · ${formatWalkingTime(distM)}</span>
       ${store.address ? `<span class="store-address">${escapeHtml(store.address)}</span>` : ''}
-      <span class="status-badge status-${store.openStatus}">
-        <span class="status-dot"></span>${statusLabel}
+      <span class="${badgeClass}"${badgeAttrs}>
+        <span class="status-dot"></span>${statusLabel}${isUnknown ? ' ↗' : ''}
       </span>
       ${hasMore ? `
       <div class="store-nav">

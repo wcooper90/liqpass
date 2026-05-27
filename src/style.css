@@ -303,6 +303,14 @@ html, body {
 .status-unknown { color: var(--muted); }
 .status-unknown .status-dot { background: var(--muted); }
 
+.status-badge-clickable {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.status-badge-clickable:active {
+  opacity: 0.6;
+}
+
 /* ── Next-nearest subtle link ────────────────────────── */
 
 .store-nav {
