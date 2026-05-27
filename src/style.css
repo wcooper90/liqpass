@@ -71,7 +71,7 @@ html, body {
 
 .icon-btn {
   position: absolute;
-  top: 18px;
+  top: max(40px, env(safe-area-inset-top, 0px));
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -160,17 +160,13 @@ html, body {
   fill: var(--red);
 }
 
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+@keyframes searching-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
 }
 
 .compass-wrapper.searching #compass-rose {
-  animation: spin 2s linear infinite;
-}
-
-.compass-wrapper.searching .rose-ring {
-  stroke-dasharray: 12 8;
+  animation: searching-pulse 1.8s ease-in-out infinite;
 }
 
 .compass-wrapper.searching #compass-needle {

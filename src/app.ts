@@ -219,8 +219,8 @@ export class App {
       this.store = stores[0];
       this.updateBearing(coords);
       this.setState('found');
-    } catch (err) {
-      this.setState('error', (err as Error).message ?? 'Could not reach store data.');
+    } catch {
+      this.setState('error', "Can't reach the bar — check your connection and try again.");
     }
   }
 
@@ -245,9 +245,9 @@ export class App {
     const text = this.store.address ?? this.store.name;
     try {
       await navigator.clipboard.writeText(text);
-      this.showToast(`Copied: ${text}`);
+      this.showToast('Address copied');
     } catch {
-      this.showToast('Could not copy');
+      this.showToast("Couldn't copy");
     }
   }
 
@@ -301,11 +301,11 @@ export class App {
         break;
 
       case 'locating':
-        this.infoEl.innerHTML = `<span class="status-text">Finding your location<span class="loading-dots"><span>·</span><span>·</span><span>·</span></span></span>`;
+        this.infoEl.innerHTML = `<span class="status-text">Getting your bearings<span class="loading-dots"><span>·</span><span>·</span><span>·</span></span></span>`;
         break;
 
       case 'fetching':
-        this.infoEl.innerHTML = `<span class="status-text">Searching nearby<span class="loading-dots"><span>·</span><span>·</span><span>·</span></span></span>`;
+        this.infoEl.innerHTML = `<span class="status-text">Sniffing out the nearest bottle<span class="loading-dots"><span>·</span><span>·</span><span>·</span></span></span>`;
         break;
 
       case 'found':
@@ -325,7 +325,7 @@ export class App {
       case 'no_stores': {
         const lastLabel = formatRadius(this.lastSearchRadius);
         this.infoEl.innerHTML = `
-          <span class="error-title">Nothing Nearby</span>
+          <span class="error-title">Bone Dry</span>
           <span class="error-body">No liquor stores found within ${lastLabel}.</span>`;
         this.startBtn.textContent = 'Try Again';
         this.startBtn.onclick = () => this.resetToIdle();
@@ -335,11 +335,12 @@ export class App {
 
       case 'error':
         this.infoEl.innerHTML = `
-          <span class="error-title">Error</span>
+          <span class="error-title">Dry Spell</span>
           <span class="error-body">${escapeHtml(errorMsg ?? 'Something went wrong.')}</span>`;
         this.startBtn.textContent = 'Retry';
         this.startBtn.classList.remove('hidden');
         this.startBtn.onclick = () => this.resetToIdle();
+        Haptics.impact({ style: ImpactStyle.Medium }).catch(() => {});
         break;
     }
   }
