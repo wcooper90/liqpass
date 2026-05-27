@@ -49,7 +49,7 @@ async function fetchFromEndpoint(
   query: string
 ): Promise<OverpassResponse> {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 12_000);
+  const timeoutId = setTimeout(() => controller.abort(), 1);
   try {
     const res = await fetch(endpoint, {
       method: 'POST',
