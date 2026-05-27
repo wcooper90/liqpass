@@ -336,7 +336,7 @@ export class App {
       case 'error':
         this.infoEl.innerHTML = `
           <span class="error-title">Error</span>
-          <span class="error-body">${errorMsg ?? 'Something went wrong.'}</span>`;
+          <span class="error-body">${escapeHtml(errorMsg ?? 'Something went wrong.')}</span>`;
         this.startBtn.textContent = 'Retry';
         this.startBtn.classList.remove('hidden');
         this.startBtn.onclick = () => this.resetToIdle();
@@ -395,5 +395,6 @@ function escapeHtml(s: string): string {
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
 }

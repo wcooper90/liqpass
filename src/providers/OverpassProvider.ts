@@ -75,7 +75,9 @@ function parseElements(
   for (const el of elements) {
     const lat = el.lat ?? el.center?.lat;
     const lon = el.lon ?? el.center?.lon;
-    if (lat === undefined || lon === undefined) continue;
+    if (typeof lat !== 'number' || typeof lon !== 'number') continue;
+    if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
+    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) continue;
 
     const tags = el.tags ?? {};
     const name = tags['name'] ?? tags['brand'] ?? 'Liquor Store';

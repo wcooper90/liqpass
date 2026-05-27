@@ -76,6 +76,22 @@ describe('OverpassProvider', () => {
     expect(store.lon).toBe(-0.1);
   });
 
+  it('skips elements with out-of-range or non-finite coordinates', async () => {
+    vi.mocked(fetch).mockResolvedValue(
+      makeResponse([
+        // @ts-expect-error — simulating bad server response
+        { type: 'node', id: 1, lat: 'oops', lon: -0.1, tags: { name: 'String Lat' } },
+        { type: 'node', id: 2, lat: NaN, lon: -0.1, tags: { name: 'NaN Lat' } },
+        { type: 'node', id: 3, lat: 91, lon: -0.1, tags: { name: 'Out of Range' } },
+        { type: 'node', id: 4, lat: 51.5, lon: -0.1, tags: { name: 'Good Store' } },
+      ])
+    );
+
+    const stores = await new OverpassProvider().findNearby(CENTER, 5_000);
+    expect(stores).toHaveLength(1);
+    expect(stores[0].name).toBe('Good Store');
+  });
+
   it('skips elements with no resolvable coordinates', async () => {
     vi.mocked(fetch).mockResolvedValue(
       makeResponse([
