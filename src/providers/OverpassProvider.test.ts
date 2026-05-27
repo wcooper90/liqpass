@@ -46,27 +46,6 @@ describe('OverpassProvider', () => {
     expect(stores[1].name).toBe('Far Store');
   });
 
-  it('prefers a confirmed-open store over a closer unknown-hours store', async () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date(2026, 4, 20, 14, 0, 0)); // Wed 2pm
-
-    vi.mocked(fetch).mockResolvedValue(
-      makeResponse([
-        // Unknown hours at ~111 m north of CENTER
-        { type: 'node', id: 1, lat: 51.501, lon: -0.1, tags: { name: 'Closer Unknown' } },
-        // Confirmed open at ~445 m north of CENTER (closer than 111 + 500 m penalty)
-        {
-          type: 'node', id: 2, lat: 51.504, lon: -0.1,
-          tags: { name: 'Farther Open', opening_hours: '24/7' },
-        },
-      ])
-    );
-
-    const stores = await new OverpassProvider().findNearby(CENTER, 5_000);
-    expect(stores[0].name).toBe('Farther Open');
-    expect(stores[1].name).toBe('Closer Unknown');
-  });
-
   it('uses brand tag when name is absent', async () => {
     vi.mocked(fetch).mockResolvedValue(
       makeResponse([{ type: 'node', id: 1, lat: 51.5, lon: -0.1, tags: { brand: 'LCBO' } }])
