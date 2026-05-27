@@ -48,15 +48,22 @@ async function fetchFromEndpoint(
   endpoint: string,
   query: string
 ): Promise<OverpassResponse> {
-  const res = await fetch(endpoint, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: `data=${encodeURIComponent(query)}`,
-  });
-  if (!res.ok) {
-    throw new Error(`Overpass HTTP ${res.status}`);
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 12_000);
+  try {
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `data=${encodeURIComponent(query)}`,
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      throw new Error(`Overpass HTTP ${res.status}`);
+    }
+    return res.json() as Promise<OverpassResponse>;
+  } finally {
+    clearTimeout(timeoutId);
   }
-  return res.json() as Promise<OverpassResponse>;
 }
 
 function parseElements(

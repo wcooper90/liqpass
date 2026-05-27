@@ -36,6 +36,7 @@ export class App {
   private store: Store | null = null;
   private bearingDeg = 0;
   private watcher: GeolocationWatcher | null = null;
+  private prefetchWatcher: GeolocationWatcher | null = null;
   private lastSearchRadius = INITIAL_RADIUS_M;
   private headingHistory: number[] = [];
   private calibrationVisible = false;
@@ -81,13 +82,27 @@ export class App {
         this.fetchStores(this.userCoords);
       }
     });
+
+    this.startPrefetch();
+  }
+
+  private async startPrefetch() {
+    this.prefetchWatcher = await watchLocation(
+      (coords) => { this.userCoords = coords; },
+      () => {}
+    );
   }
 
   private async start() {
     this.startBtn.classList.add('hidden');
+    this.prefetchWatcher?.stop();
+    this.prefetchWatcher = null;
     await this.requestDeviceOrientation();
     this.startDeviceOrientation();
     this.startGeolocation();
+    if (this.userCoords) {
+      this.fetchStores(this.userCoords);
+    }
   }
 
   // iOS 13+ requires a user-gesture permission call for DeviceOrientationEvent
@@ -164,7 +179,9 @@ export class App {
   }
 
   private async startGeolocation() {
-    this.setState('locating');
+    if (!this.userCoords) {
+      this.setState('locating');
+    }
 
     this.watcher = await watchLocation(
       (coords) => {
@@ -330,6 +347,8 @@ export class App {
   private resetToIdle() {
     this.watcher?.stop();
     this.watcher = null;
+    this.prefetchWatcher?.stop();
+    this.prefetchWatcher = null;
     this.userCoords = null;
     this.store = null;
     this.stores = [];
@@ -338,6 +357,7 @@ export class App {
     this.setState('idle');
     this.startBtn.textContent = 'Find Nearest Store';
     this.startBtn.onclick = () => this.start();
+    this.startPrefetch();
   }
 
   private renderStoreInfo(store: Store, distM: number) {

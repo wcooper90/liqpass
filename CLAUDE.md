@@ -51,6 +51,40 @@ The app is a plain TypeScript + Vite SPA wrapped in Capacitor (no framework).
 
 **Vite server:** exposes on LAN (`host: true`) so a phone on the same network can test the web build. `allowedHosts` lists localtunnel hostnames for remote phone testing.
 
+## iOS App Store — next steps (requires Mac)
+
+The iOS Capacitor platform has not been scaffolded yet. Complete these steps in order:
+
+**1. Scaffold the iOS project**
+```bash
+npm run build
+npx cap add ios
+npx cap sync ios
+```
+
+**2. Add required `Info.plist` usage descriptions**
+
+Without these, Apple will reject the submission. Open the Xcode project (`npx cap open ios`) and add to `Info.plist`:
+
+| Key | Suggested value |
+|-----|-----------------|
+| `NSLocationWhenInUseUsageDescription` | `Liqpass uses your location to find the nearest liquor store.` |
+| `NSMotionUsageDescription` | `Liqpass uses your device's compass to point you toward the nearest store.` |
+
+**3. Check the app icon**
+Apple requires a 1024×1024 PNG with no transparency. Verify `assets/icon.png` meets this before submitting.
+
+**4. Add iOS sync script to package.json**
+```json
+"cap:sync:ios": "npm run build && npx cap sync ios",
+"cap:open:ios": "npx cap open ios"
+```
+
+**5. Update `CLAUDE.md`**
+Once the `ios/` project directory exists, remove this section and update the Commands section with the iOS scripts.
+
+---
+
 ## Key platform notes
 
 - iOS: `DeviceOrientationEvent.requestPermission()` must be called from a user gesture (the Start button). Uses `webkitCompassHeading` (clockwise from North).
