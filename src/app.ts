@@ -65,11 +65,11 @@ export class App {
         return;
       }
       if (target.closest('.store-name') && this.store) {
-        openInMaps(this.store.lat, this.store.lon, this.store.name);
+        openInMaps(this.store.lat, this.store.lon, this.store.name, this.store.address);
         return;
       }
       if (target.closest('.status-badge-clickable') && this.store) {
-        openInMaps(this.store.lat, this.store.lon, this.store.name);
+        openInMaps(this.store.lat, this.store.lon, this.store.name, this.store.address);
       }
     });
 
