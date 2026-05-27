@@ -49,7 +49,7 @@ async function fetchFromEndpoint(
   query: string
 ): Promise<OverpassResponse> {
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 12_000);
+  const timeoutId = setTimeout(() => controller.abort(), 1);
   try {
     const res = await fetch(endpoint, {
       method: 'POST',
@@ -112,12 +112,14 @@ function parseElements(
     });
   }
 
-  // Sort by distance from user
-  stores.sort(
-    (a, b) =>
-      haversineDistance(center, { lat: a.lat, lon: a.lon }) -
-      haversineDistance(center, { lat: b.lat, lon: b.lon })
-  );
+  // Sort by distance, but penalise unknown-hours stores so confirmed-open ones
+  // surface first when distances are comparable.
+  const UNKNOWN_HOURS_PENALTY_M = 500;
+  const effectiveDistance = (s: Store): number => {
+    const d = haversineDistance(center, { lat: s.lat, lon: s.lon });
+    return s.openStatus === 'unknown' ? d + UNKNOWN_HOURS_PENALTY_M : d;
+  };
+  stores.sort((a, b) => effectiveDistance(a) - effectiveDistance(b));
 
   return stores;
 }

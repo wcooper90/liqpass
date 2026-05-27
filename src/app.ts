@@ -365,7 +365,7 @@ export class App {
     const statusLabel = {
       open: 'Open',
       closed: 'Closed',
-      unknown: 'Hours unknown',
+      unknown: 'Check hours',
     }[store.openStatus];
 
     const hasMore = this.stores.length > 1;

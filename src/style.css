@@ -300,8 +300,8 @@ html, body {
 .status-open    .status-dot { background: #2faa55; }
 .status-closed  { color: var(--red); }
 .status-closed  .status-dot { background: var(--red); }
-.status-unknown { color: var(--warn); }
-.status-unknown .status-dot { background: var(--warn); }
+.status-unknown { color: var(--muted); }
+.status-unknown .status-dot { background: var(--muted); }
 
 /* ── Next-nearest subtle link ────────────────────────── */
 
